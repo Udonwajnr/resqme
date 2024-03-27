@@ -28,7 +28,6 @@ const HomeScreen = () => {
                     <PulseAnimation color={'red'} numPulses={8} diameter={190} speed={4000} duration={5000} />
                 </View>
 
-
                 </View>
             </View>
 
