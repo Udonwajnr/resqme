@@ -6,7 +6,9 @@ import Otpscreen from './src/screens/Otpscreen';
 import HomeScreen from './src/screens/HomeScreen';
 import IncidentScreen from './src/screens/IncidentScreen';
 import MapScreen from './src/screens/MapScreen';
-
+import ContactScreen from './src/screens/ContactScreen';
+import PublicEmergencyScreen from './src/screens/PublicEmergencyScreen';
+import AddEmergencyContactScreen from './src/screens/AddEmergencyContactScreen';
 export default function App() {
   return (
     // <SignInScreen/>
@@ -14,7 +16,11 @@ export default function App() {
       // <HomeScreen/>
       // <IncidentScreen/>
     // <Text>,jkjkkl</Text>
-    <MapScreen/>
+    // <MapScreen/>
+    // <ContactScreen/>
+    // <PublicEmergencyScreen/>
+    <AddEmergencyContactScreen/>
+
   );
 }
 

@@ -12,7 +12,7 @@ const MapScreen = () => {
       });
 
     return (
-    <SafeAreaView className="flex-1 flex-col bg-slate-50">
+    <SafeAreaView className="flex-1 flex-col ">
         <View className="relative">
             <View className="h-">
                 <MapView
