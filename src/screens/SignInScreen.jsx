@@ -7,7 +7,7 @@ import {useFonts} from "expo-font"
 import { Feather } from '@expo/vector-icons';
 import * as SplashScreen from "expo-splash-screen"
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 const SignInScreen = () => {
     const [showPassword,setShowPassword] = useState(true)
@@ -16,23 +16,23 @@ const SignInScreen = () => {
       setShowPassword(!showPassword)
     }
 
-    const [isLoaded] =useFonts({
-        "os":require("./../../assets/fonts/OpenSans-ExtraBold.ttf")
-    })
+    // const [isLoaded] =useFonts({
+    //     "os":require("./../../assets/fonts/OpenSans-ExtraBold.ttf")
+    // })
 
-    const handleOnLayout = useCallback(async () => {
-        if (isLoaded) {
-          await SplashScreen.hideAsync(); //hide the splashscreen
-        }
-      }, [isLoaded]);
+    // const handleOnLayout = useCallback(async () => {
+    //     if (isLoaded) {
+    //       await SplashScreen.hideAsync(); //hide the splashscreen
+    //     }
+    //   }, [isLoaded]);
 
 
-      if (!isLoaded) {SafeAreaView
-        return null;
-      }
+    //   if (!isLoaded) {SafeAreaView
+    //     return null;
+    //   }
 
     return (
-        <SafeAreaView className="flex-1 px-4 flex-col py-10 bg-slate-50" onLayout={handleOnLayout}>
+        <SafeAreaView className="flex-1 px-4 flex-col py-10 bg-slate-50">
           <View>
               <Text className="text-2xl font-bold ">Welcome Back &#x1F44B; </Text>
               <Text className={"text-[#b2b9c0] mt-4"}>Enter your details to sign in</Text>

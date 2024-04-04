@@ -30,24 +30,24 @@ const SignUpScreen = () => {
     setShowPassword(!showPassword)
   }
 
-  const [isLoaded] =useFonts({
-    "os":require("./../../assets/fonts/OpenSans-ExtraBold.ttf")
-})
+//   const [isLoaded] =useFonts({
+//     "os":require("./../../assets/fonts/OpenSans-ExtraBold.ttf")
+// })
 
-const handleOnLayout = useCallback(async () => {
-    if (isLoaded) {
-      await SplashScreen.hideAsync(); //hide the splashscreen
-    }
-  }, [isLoaded]);
+// const handleOnLayout = useCallback(async () => {
+//     if (isLoaded) {
+//       await SplashScreen.hideAsync(); //hide the splashscreen
+//     }
+//   }, [isLoaded]);
 
 
-  if (!isLoaded) {SafeAreaView
-    return null;
-  }
+//   if (!isLoaded) {SafeAreaView
+//     return null;
+//   }
   
   return (
 
-    <SafeAreaView className="flex-1 px-4 flex-col py-10 bg-slate-50" onLayout={handleOnLayout}>
+    <SafeAreaView className="flex-1 px-4 flex-col py-10 bg-slate-50">
       <View>
           <Text className="text-2xl font-bold ">Sign Up </Text>
           <Text className={"text-[#b2b9c0] mt-2"}>Fill in Your Credentials to SignUp</Text>

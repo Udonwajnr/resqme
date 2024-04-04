@@ -4,9 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import {PulseAnimation} from 'react-native-animated-pulse';
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   return (
-    <SafeAreaView className="flex-1 flex-col bg-slate-50 py-2.5">
+    <SafeAreaView className="flex-1 flex-col bg-slate-50 py-3.5">
         <View className="flex-row justify-between px-4">
             <Text className="text-lg font-bold">Hi, Omotola Bella</Text>
             <View>
@@ -20,7 +20,7 @@ const HomeScreen = () => {
                 <Text className="text-center text-[#b2b9c0] mt-3">Press the sos button ,your live location will be shared with the nearest help center and your emergency contact.</Text>            
             
                 <View className="flex-row justify-center items-center my-5">
-                    <TouchableOpacity className="bg-[#c72020] w-40 h-40 rounded-full flex-col justify-center items-center border-2 border-[#b22123]">
+                    <TouchableOpacity className="bg-[#c72020] w-40 h-40 rounded-full flex-col justify-center items-center border-2 border-[#b22123]" onPress={()=>navigation.navigate("Incident")}>
                         <Text className="text-white text-2xl font-bold">SOS</Text>
                         <Text className="text-white">Press for 3 seconds</Text>    
                     </TouchableOpacity>                
@@ -54,21 +54,21 @@ const HomeScreen = () => {
             <View className="">
                 <Text className="font-bold text-base my-2">What is your Emergency?</Text>
                 <View className="flex-row flex-wrap gap-3 mt-0.5">
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md">
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident")}>
                         <View className="bg-[#ecedf0] rounded-full justify-center items-center flex-row p-1">
                             <Text className="mr-1 text-lg">&#128657;</Text>
                         </View>
                         <Text className="ml-1">Medical</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md">
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident")}>
                         <View className="bg-[#ecedf0] rounded-full justify-center items-center flex-row p-1">
                             <Text className="mr-1 text-lg">&#128293;</Text>
                         </View>
                         <Text className="ml-1">Fire</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md">
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident")}>
                         <View className="bg-[#ecedf0] rounded-full justify-center items-center flex-row p-1">
                             <Text className="mr-1 text-lg">&#127786;&#65039;</Text>
                         </View>                   
@@ -76,19 +76,19 @@ const HomeScreen = () => {
                     </TouchableOpacity>
                     
 
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md">
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident")}>
                         <Text className="mr-1 text-lg">💥</Text>
                         <Text className="ml-1">Accident</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md">
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident")}>
                     <View className="bg-[#ecedf0] rounded-full justify-center items-center flex-row p-1">
                             <Text className="mr-1 text-lg">&#128298;</Text>
                         </View> 
                         <Text className="ml-1">Violence</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md">
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md"onPress={()=>navigation.navigate("Incident")}>
                         <View className="bg-[#ecedf0] rounded-full justify-center items-center flex-row p-1">
                             <Text className="mr-1 text-lg">&#128104;&#8205;&#128658;</Text>
                         </View> 

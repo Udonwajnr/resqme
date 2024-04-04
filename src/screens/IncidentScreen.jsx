@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { Text,TextInput,View,TouchableOpacity,StyleSheet } from 'react-native'
+import { Text,TextInput,View,TouchableOpacity,StyleSheet,ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -32,7 +32,10 @@ const IncidentScreen = () => {
     };
   return (
     // navigation header
-    <SafeAreaView className="flex-1 flex-col bg-slate-50 py-2.5 px-4">
+
+    <View className="flex-1 flex-col bg-slate-50 pb-1 px-4">
+       <ScrollView  showsVerticalScrollIndicator={false}>
+
         <View className="mt-5">
             <Text>Incident location</Text>
             <View className="flex px-2 mt-2 flex-row items-center bg-[#ecedf0]">
@@ -91,7 +94,9 @@ const IncidentScreen = () => {
         <TouchableOpacity className="h-9 mt-5 rounded-md bg-[#e43151] justify-center items-center" >
                 <Text className="text-white">Send Report</Text> 
          </TouchableOpacity>
-    </SafeAreaView>
+       </ScrollView>
+
+    </View>
   )
 }
 
