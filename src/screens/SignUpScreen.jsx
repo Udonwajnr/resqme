@@ -31,7 +31,7 @@ const SignUpScreen = ({navigation}) => {
         // setUserToken("kmfekfke");
         setLoginLoader(false)
         setIsLoading(false)
-        navigation.navigate("Otp")
+        navigation.navigate("Otp",{email:email})
     })
     .catch((err)=>{
         setLoginLoader(true)
