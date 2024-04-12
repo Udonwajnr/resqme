@@ -2,9 +2,25 @@ import React from 'react'
 import { Text,TouchableOpacity,View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import OtpTextInput from 'react-native-text-input-otp'
-const Otpscreen = () => {
+const OtpScreen = () => {
   const [otp, setOtp] = React.useState('');
 
+  const OptVerification =async()=>{
+    await axios.post("https://emergency-backend-api.onrender.com/api/user/verify",{otp})
+    .then((data)=>{
+        console.log(data)
+        // setUserToken("kmfekfke");
+        setLoginLoader(false)
+        setIsLoading(false)
+        navigation.navigate("Login")
+    })
+    .catch((err)=>{
+        setLoginLoader(true)
+        console.log(err)
+        setError(err.response.data.error)
+        setLoginLoader(false)
+    })
+  }
 
   return (
     <SafeAreaView className="flex-1 px-4 flex-col py-10 bg-slate-50">
@@ -30,16 +46,16 @@ const Otpscreen = () => {
            </TouchableOpacity>
       </View>
 
-      <View>
-        <TouchableOpacity className="h-9 mt-9 rounded-md  bg-[#e43151] justify-center items-center ">
-          <Text className="text-white">Verify</Text>
-        </TouchableOpacity>
-      </View>
-
-      
-
+      <TouchableOpacity className="h-9 mt-9 rounded-md  bg-[#e43151] justify-center items-center" onPress={()=>login(email,password)} disabled={loginLoader?true:false}>
+                {
+                  loginLoader?
+                  <ActivityIndicator color={"white"}/>
+                  :
+                  <Text className="text-white">Veru</Text> 
+                }
+              </TouchableOpacity>
     </SafeAreaView>
   )
 }
 
-export default Otpscreen
+export default OtpScreen
