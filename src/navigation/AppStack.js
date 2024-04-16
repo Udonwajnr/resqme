@@ -76,7 +76,6 @@ export default function AppStack() {
     }} 
     />
 
-
     </Tab.Navigator>
   )
 }

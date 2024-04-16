@@ -1,17 +1,75 @@
-import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import React,{useContext,useState,useEffect} from 'react'
+import { Text, TouchableOpacity, View, Platform } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import {PulseAnimation} from 'react-native-animated-pulse';
+import { AuthContext } from '../components/context/AuthContext';
+import { AntDesign } from '@expo/vector-icons';
+import * as Location from 'expo-location';
+
 const HomeScreen = ({navigation}) => {
-  return (
+  const {logout,userToken }=useContext(AuthContext)
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [initialRegion, setInitialRegion] = useState(null);
+  const [latitude,setLatitude] = useState(0)
+  const [longitude,setLongitude] = useState(0)
+  const [address,setAddress] = useState([])
+
+  
+
+//   const reverseGeoCode =async()=>{
+//     const reverseGeoCodeAddress = await Location.reverseGeocodeAsync({
+//         longitude:longitude,
+//         latitude:latitude,
+//     })
+//     console.log("Reverse Geocode")
+//     // console.log(reverseGeoCodeAddress)
+//     // setAddress(reverseGeoCodeAddress)
+//   }
+
+  useEffect(()=>{
+    (async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          setErrorMsg('Permission to access location was denied');
+          return;
+        }
+        let location = await Location.getCurrentPositionAsync({});
+         
+        const reverseGeoCodeAddress = await Location.reverseGeocodeAsync({
+                    longitude:location.coords.longitude,
+                    latitude:location.coords.latitude,  
+                }).then((data)=>{
+                    setAddress(data[0])
+
+                })
+                setLocation(location);
+                setLatitude(location.coords.latitude)
+                setLongitude(location.coords.longitude)      
+                // console.log(reverseGeoCodeAddress)  
+      })();
+
+  },[])
+
+//   console.log(location)
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+
+  console.log(location)
+    return (
     <SafeAreaView className="flex-1 flex-col bg-slate-50 py-3.5">
         <View className="flex-row justify-between px-4">
-            <Text className="text-lg font-bold">Hi, Omotola Bella</Text>
-            <View>
-                <FontAwesome5 name="bell" size={24} color="black" />
-            </View>
+            <Text className="text-lg font-bold">Hi, {userToken?.fullName}</Text>
+            <TouchableOpacity onPress={()=>logout()}>
+                <AntDesign name="logout" size={24} color="black" />
+            </TouchableOpacity>
         </View>
 
         <View className="px-4">
@@ -20,7 +78,7 @@ const HomeScreen = ({navigation}) => {
                 <Text className="text-center text-[#b2b9c0] mt-3">Press the sos button ,your live location will be shared with the nearest help center and your emergency contact.</Text>            
             
                 <View className="flex-row justify-center items-center my-5">
-                    <TouchableOpacity className="bg-[#c72020] w-40 h-40 rounded-full flex-col justify-center items-center border-2 border-[#b22123]" onPress={()=>navigation.navigate("Incident")}>
+                    <TouchableOpacity className="bg-[#c72020] w-40 h-40 rounded-full flex-col justify-center items-center border-2 border-[#b22123]">
                         <Text className="text-white text-2xl font-bold">SOS</Text>
                         <Text className="text-white">Press for 3 seconds</Text>    
                     </TouchableOpacity>                
@@ -42,7 +100,7 @@ const HomeScreen = ({navigation}) => {
 
                 <View className="flex-col ml-3">
                     <Text className="text-[#b2b9c0]">Your Current Location</Text>
-                    <Text className="font-bold">14,Adeogun Road, Fadeyi, Lagos</Text>
+                    <Text className="font-bold break-words">{address.formattedAddress}</Text>
                 </View>
 
             </View>

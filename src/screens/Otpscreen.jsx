@@ -29,7 +29,6 @@ const OtpScreen = ({ route, navigation }) => {
     })
   }
 
-  console.log(otp)
 
   return (
     <SafeAreaView className="flex-1 px-4 flex-col py-10 bg-slate-50">
@@ -41,7 +40,7 @@ const OtpScreen = ({ route, navigation }) => {
         <OtpTextInput
         otp={ otp }
         setOtp={ setOtp }
-        digits={5}
+        digits={6}
         style={{ borderRadius: 0, borderTopWidth: 0 , borderRightWidth:0, borderLeftWidth:0, height: 45 }}
         fontStyle={{ fontSize: 20, fontWeight: 'bold' }}
         focusedStyle={{ borderColor: '#e43051', borderBottomWidth: 2 }}          
