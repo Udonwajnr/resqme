@@ -1,25 +1,33 @@
-import React,{useState} from 'react'
-import { Text,TextInput,View,TouchableOpacity,StyleSheet,ScrollView } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { AntDesign } from '@expo/vector-icons';
+import React,{useState,useRef} from 'react'
+import { Text,TextInput,View,TouchableOpacity,Dimensions,StyleSheet,ScrollView,Alert,ImageBackground } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
-
-
-const IncidentScreen = () => {
-
+import { Camera,CameraType} from 'expo-camera';
+import { AuthContext } from '../components/context/AuthContext';
+import CameraPreview from '../components/CameraPreview';
+const IncidentScreen = ({route,navigation}) => {
+    const {incident} = route.params
+    const WINDOW_HEIGHT = Dimensions.get('window').height;
+    const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
+    const cameraRef = useRef();
+    const [type, setType] = useState(CameraType.back);
+    const [permission, requestPermission] = Camera.useCameraPermissions();
+    const [startCamera,setStartCamera] = useState(false) 
+    const [previewVisible, setPreviewVisible] = useState(false)
+    const [capturedImage, setCapturedImage] = useState(null)
+    let camera = Camera
     const data = [
         { label: 'Medical', value: 'Medical' },
         { label: 'Fire', value: 'Fire' },
         { label: 'Natural Disaster', value: 'Natural Disaster' },
         { label: 'Accident', value: 'Accident' },
         { label: 'Violence', value: 'Violence' },
-        { label: 'SearchAndRescue', value: 'SearchAndRescue' },
+        { label: 'Search And Rescue', value: 'Search And Rescue' },
       ];
       const [value, setValue] = useState(null);
-    const [isFocus, setIsFocus] = useState(false);
-
+      const [isFocus, setIsFocus] = useState(false);
+    
     const renderLabel = () => {
       if (value || isFocus) {
         return (
@@ -30,19 +38,150 @@ const IncidentScreen = () => {
       }
       return null;
     };
+
+    // if (hasPermission === null) {
+    //   return <View />;
+    // }
+
+    const __startCamera = async () => {
+      const {status} = await Camera.requestCameraPermissionsAsync()
+   if(status === 'granted'){
+     // do something
+     setStartCamera(true)
+   }else{
+     Alert.alert("Access denied")
+   }
+    
+  }
+
+  const __takePicture = async () => {
+    if (!camera) return
+    const photo = await camera.takePictureAsync()
+    console.log(photo)
+    setPreviewVisible(true)
+    setCapturedImage(photo)
+  }
+
+  const __retakePicture = () => {
+    setCapturedImage(null)
+    setPreviewVisible(false)
+    __startCamera()
+  }
+
+  const __savePhoto=()=>{
+    console.log(" picture saved")
+    setStartCamera(false)
+    setPreviewVisible(false)
+    setCapturedImage(false)
+  }
   return (
     // navigation header
+<>
 
-    <View className="flex-1 flex-col bg-slate-50 pb-1 px-4">
+{/* {previewVisible && capturedImage ? (
+            <CameraPreview photo={capturedImage} />
+          ) : (
+            <Camera
+              style={{flex: 1}}
+              ref={(r) => {
+                camera = r
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  width: '100%',
+                  backgroundColor: 'transparent',
+                  flexDirection: 'row'
+                }}
+              >
+                <View
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    flexDirection: 'row',
+                    flex: 1,
+                    width: '100%',
+                    padding: 20,
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <View
+                    style={{
+                      alignSelf: 'center',
+                      flex: 1,
+                      alignItems: 'center'
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={__takePicture}
+                      style={{
+                        width: 70,
+                        height: 70,
+                        bottom: 0,
+                        borderRadius: 50,
+                        backgroundColor: '#fff'
+                      }}
+                    />
+                  </View>
+                </View>
+              </View>
+            </Camera>
+          )} */}
+{previewVisible && capturedImage ? (
+            <CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture}/>
+          ) :
+            startCamera && (
+            <Camera
+              style={{flex: 1,width:"100%",height:"100%",position:"absolute",zIndex:1}}
+              ref={(r) => {
+                camera = r
+              }}
+              className="  "
+            >
+<View
+        style={{
+        position: 'absolute',
+        bottom: 0,
+        flexDirection: 'row',
+        flex: 1,
+        width: '100%',
+        padding: 20,
+        justifyContent: 'space-between'
+        }}
+      >
+        <View
+        style={{
+        alignSelf: 'center',
+        flex: 1,
+        alignItems: 'center'
+        }}
+        >
+            <TouchableOpacity
+            onPress={__takePicture}
+            style={{
+            width: 70,
+            height: 70,
+            bottom: 0,
+            borderRadius: 50,
+            backgroundColor: '#fff'
+            }}
+            />
+    </View>
+    </View>
+
+            </Camera>
+      )}
+    <View className="flex-1 flex-col pb-1 px-4 relative">
        <ScrollView  showsVerticalScrollIndicator={false}>
 
-        <View className="mt-5">
-            <Text>Incident location</Text>
-            <View className="flex px-2 mt-2 flex-row items-center bg-[#ecedf0]">
-                    <Entypo name="location-pin" size={24} color="black" />
-                    <TextInput className="flex-1 h-9 pl-3 rounded-md text-[#535355]" selectionColor={'#535355'} placeholder='johndoe@gmail.com'/>
-             </View>
-        </View>
+          <View className="mt-5">
+              <Text>Incident location</Text>
+              <View className="flex px-2 mt-2 flex-row items-center bg-[#ecedf0]">
+                      <Entypo name="location-pin" size={24} color="black" />
+                      <TextInput className="flex-1 h-9 pl-3 rounded-md text-[#535355]" selectionColor={'#535355'} placeholder='johndoe@gmail.com'/>
+              </View>
+          </View>
 
         <View className="mt-5">
             <Text>Nature of Incident</Text>
@@ -60,13 +199,14 @@ const IncidentScreen = () => {
           valueField="value"
           placeholder={!isFocus ? 'Select Incident Type' : '...'}
         //   searchPlaceholder="Search..."
-          value={value}
+          value={incident}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={item => {
             setValue(item.value);
             setIsFocus(false);
           }}
+          disable={true}
           
         />
              </View>
@@ -83,20 +223,24 @@ const IncidentScreen = () => {
              style={{ height:200, textAlignVertical: 'top'}}
              />
         </View>
-
-        <View className="mt-5">
-            <View className="h-40 w-full border-[#cfd0d4] border-2 border-dotted justify-center items-center">
-                <MaterialCommunityIcons name="camera-plus-outline" size={24} color="black" />
-                <Text> Text Attachment </Text>
-            </View>
+          
+       
+      <View className="mt-5">
+        <View className="h-40 w-full border-[#cfd0d4] border-2 border-dotted justify-center items-center" >
+          <TouchableOpacity onPress={__startCamera} className="justify-center items-center">
+              <MaterialCommunityIcons name="camera-plus-outline" size={24} color="black" />
+            <Text> Photo Attachment </Text>
+          </TouchableOpacity>
         </View>
+    </View>
+        
 
-        <TouchableOpacity className="h-9 mt-5 rounded-md bg-[#e43151] justify-center items-center" >
+        <TouchableOpacity className="h-9 mt-5 rounded-md bg-[#e43151] justify-center items-center">
                 <Text className="text-white">Send Report</Text> 
          </TouchableOpacity>
        </ScrollView>
-
     </View>
+</>
   )
 }
 

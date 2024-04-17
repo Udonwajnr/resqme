@@ -8,27 +8,21 @@ import { AuthContext } from '../components/context/AuthContext';
 import { AntDesign } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
+import { Camera } from 'expo-camera';
+
 const HomeScreen = ({navigation}) => {
-  const {logout,userToken }=useContext(AuthContext)
+  const {logout,userToken,hasPermission, setHasPermission }=useContext(AuthContext)
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [currentLocation, setCurrentLocation] = useState(null);
-  const [initialRegion, setInitialRegion] = useState(null);
   const [latitude,setLatitude] = useState(0)
   const [longitude,setLongitude] = useState(0)
   const [address,setAddress] = useState([])
-
-  
-
-//   const reverseGeoCode =async()=>{
-//     const reverseGeoCodeAddress = await Location.reverseGeocodeAsync({
-//         longitude:longitude,
-//         latitude:latitude,
-//     })
-//     console.log("Reverse Geocode")
-//     // console.log(reverseGeoCodeAddress)
-//     // setAddress(reverseGeoCodeAddress)
-//   }
+  const [medical,setMedical] = useState("Medical")
+  const [fire,setFire] = useState("Fire")
+  const [naturalDisaster,setNaturalDisaster] = useState("Natural Disaster")
+  const [accident,setAccident] = useState("Accident")
+  const [violence,setViolence] = useState("Violence")
+  const [searchAndRescue,setSearchAndRescue] = useState("Search And Rescue")
 
   useEffect(()=>{
     (async () => {
@@ -44,17 +38,27 @@ const HomeScreen = ({navigation}) => {
                     latitude:location.coords.latitude,  
                 }).then((data)=>{
                     setAddress(data[0])
-
+                })
+                .catch((error)=>{
+                    console.log("check your data connection")
                 })
                 setLocation(location);
                 setLatitude(location.coords.latitude)
                 setLongitude(location.coords.longitude)      
-                // console.log(reverseGeoCodeAddress)  
       })();
 
   },[])
 
-//   console.log(location)
+  useEffect(() => {
+    onHandlePermission();
+  }, []);
+
+  const onHandlePermission = async () => {
+    const { status } = await Camera.requestCameraPermissionsAsync();
+    setHasPermission(status === 'granted');
+  };
+
+  
   let text = 'Waiting..';
   if (errorMsg) {
     text = errorMsg;
@@ -93,12 +97,12 @@ const HomeScreen = ({navigation}) => {
             {/* location */}
 
             
-            <View className="  bg-[#ecedf0]  rounded-lg flex-row items-center py-3 px-3 mt-4">
+            <View className=" bg-[#ecedf0] rounded-lg flex-row items-center py-3 px-3 mt-4">
                 <View className="mr-3">
                     <Entypo name="location-pin" size={24} color="black" />
                 </View>
 
-                <View className="flex-col ml-3">
+                <View className="flex-col ">
                     <Text className="text-[#b2b9c0]">Your Current Location</Text>
                     <Text className="font-bold break-words">{address.formattedAddress}</Text>
                 </View>
@@ -112,21 +116,21 @@ const HomeScreen = ({navigation}) => {
             <View className="">
                 <Text className="font-bold text-base my-2">What is your Emergency?</Text>
                 <View className="flex-row flex-wrap gap-3 mt-0.5">
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident")}>
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident",{incident:medical})}>
                         <View className="bg-[#ecedf0] rounded-full justify-center items-center flex-row p-1">
                             <Text className="mr-1 text-lg">&#128657;</Text>
                         </View>
                         <Text className="ml-1">Medical</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident")}>
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident",{incident:fire})}>
                         <View className="bg-[#ecedf0] rounded-full justify-center items-center flex-row p-1">
                             <Text className="mr-1 text-lg">&#128293;</Text>
                         </View>
                         <Text className="ml-1">Fire</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident")}>
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident",{incident:naturalDisaster})}>
                         <View className="bg-[#ecedf0] rounded-full justify-center items-center flex-row p-1">
                             <Text className="mr-1 text-lg">&#127786;&#65039;</Text>
                         </View>                   
@@ -134,19 +138,19 @@ const HomeScreen = ({navigation}) => {
                     </TouchableOpacity>
                     
 
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident")}>
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident",{incident:accident})}>
                         <Text className="mr-1 text-lg">💥</Text>
                         <Text className="ml-1">Accident</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident")}>
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md" onPress={()=>navigation.navigate("Incident",{incident:violence})}>
                     <View className="bg-[#ecedf0] rounded-full justify-center items-center flex-row p-1">
                             <Text className="mr-1 text-lg">&#128298;</Text>
                         </View> 
                         <Text className="ml-1">Violence</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md"onPress={()=>navigation.navigate("Incident")}>
+                    <TouchableOpacity className="flex-row border border-[#b2b9c0] items-center justify-center px-2 py-1 rounded-md"onPress={()=>navigation.navigate("Incident",{incident:searchAndRescue})}>
                         <View className="bg-[#ecedf0] rounded-full justify-center items-center flex-row p-1">
                             <Text className="mr-1 text-lg">&#128104;&#8205;&#128658;</Text>
                         </View> 

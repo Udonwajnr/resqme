@@ -45,7 +45,7 @@ export default function AppStack() {
 
     <Tab.Screen name="Incident" component={IncidentScreen} options={{
             tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
-            headerShown:true,
+            // headerShown:true,
             headerStyle:{
             // backgroundColor:"red",
             // padding:"10px"

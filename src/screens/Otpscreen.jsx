@@ -9,9 +9,6 @@ const OtpScreen = ({ route, navigation }) => {
   const [isLoading,setIsLoading] = useState(false)
   const [loginLoader,setLoginLoader] = useState(false)
 
-  // 
-  // console.log(email)
-
   const OptVerification =async()=>{
     await axios.post("https://emergency-backend-api.onrender.com/api/user/verify",{email,otp})
     .then((data)=>{
