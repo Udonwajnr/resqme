@@ -1,4 +1,4 @@
-import React,{useState,useRef} from 'react'
+import React,{useState,useRef, useEffect} from 'react'
 import { Text,TextInput,View,TouchableOpacity,Dimensions,StyleSheet,ScrollView,Alert,ImageBackground } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -6,8 +6,14 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { Camera,CameraType} from 'expo-camera';
 import { AuthContext } from '../components/context/AuthContext';
 import CameraPreview from '../components/CameraPreview';
+import { useIsFocused } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
+
 const IncidentScreen = ({route,navigation}) => {
     const {incident} = route.params
+
+    const isFocused = useIsFocused();
+    
     const WINDOW_HEIGHT = Dimensions.get('window').height;
     const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
     const cameraRef = useRef();
@@ -39,9 +45,6 @@ const IncidentScreen = ({route,navigation}) => {
       return null;
     };
 
-    // if (hasPermission === null) {
-    //   return <View />;
-    // }
 
     const __startCamera = async () => {
       const {status} = await Camera.requestCameraPermissionsAsync()
@@ -74,9 +77,30 @@ const IncidentScreen = ({route,navigation}) => {
     setPreviewVisible(false)
     setCapturedImage(false)
   }
+
+  const cancelCamera =()=>{
+    setStartCamera(false)
+  }
+  const setCamara =()=>{
+    setStartCamera(false)
+  }
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+     setStartCamera(false)
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
+
+  console.log(startCamera)
+  console.log(startCamera)
   return (
     // navigation header
 <>
+
 
 {/* {previewVisible && capturedImage ? (
             <CameraPreview photo={capturedImage} />
@@ -131,7 +155,7 @@ const IncidentScreen = ({route,navigation}) => {
 {previewVisible && capturedImage ? (
             <CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture}/>
           ) :
-            startCamera && (
+          isFocused && startCamera && (
             <Camera
               style={{flex: 1,width:"100%",height:"100%",position:"absolute",zIndex:1}}
               ref={(r) => {
@@ -139,7 +163,23 @@ const IncidentScreen = ({route,navigation}) => {
               }}
               className="  "
             >
-<View
+              <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                flexDirection: 'row',
+                flex: 1,
+                width: '100%',
+                padding: 20,
+                justifyContent: 'flex-end'
+                }}
+
+                onPress={cancelCamera}
+              >
+              <AntDesign name="close" size={34} color="white" />
+              </TouchableOpacity>
+  <View
         style={{
         position: 'absolute',
         bottom: 0,
@@ -157,6 +197,8 @@ const IncidentScreen = ({route,navigation}) => {
         alignItems: 'center'
         }}
         >
+
+
             <TouchableOpacity
             onPress={__takePicture}
             style={{
@@ -233,6 +275,8 @@ const IncidentScreen = ({route,navigation}) => {
           </TouchableOpacity>
         </View>
     </View>
+
+    {/* <Text>{isFocused ? 'focused' : 'unfocused'}</Text> */}
         
 
         <TouchableOpacity className="h-9 mt-5 rounded-md bg-[#e43151] justify-center items-center">
