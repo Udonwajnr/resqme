@@ -8,7 +8,7 @@ import { AuthContext } from '../components/context/AuthContext';
 import CameraPreview from '../components/CameraPreview';
 import { useIsFocused } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
-
+import axios from 'axios';
 const IncidentScreen = ({route,navigation}) => {
     const {incident} = route.params
 
@@ -59,8 +59,8 @@ const IncidentScreen = ({route,navigation}) => {
 
   const __takePicture = async () => {
     if (!camera) return
-    const photo = await camera.takePictureAsync()
-    console.log(photo)
+    const options = { quality: 0.7, base64: true };
+    const photo = await camera.takePictureAsync(options)
     setPreviewVisible(true)
     setCapturedImage(photo)
   }
@@ -71,7 +71,21 @@ const IncidentScreen = ({route,navigation}) => {
     __startCamera()
   }
 
-  const __savePhoto=()=>{
+  const __savePhoto=async(url)=>{
+    let base64Img = `data:image/jpg;base64,${capturedImage.base64}`;
+    let data = {
+      file: base64Img,
+      upload_preset: 'emergency'
+    };
+    await axios.post("https://api.cloudinary.com/v1_1/djwombdbg/image/upload",data)
+    .then((res)=>{
+      Alert.alert("upload successful")
+      console.log(res)
+    }).catch((err)=>{
+      Alert.alert("upload not Successful")
+      console.log(error)
+    })
+    
     console.log(" picture saved")
     setStartCamera(false)
     setPreviewVisible(false)
@@ -94,64 +108,13 @@ const IncidentScreen = ({route,navigation}) => {
     return unsubscribe;
   }, [navigation]);
 
-
-  console.log(startCamera)
-  console.log(startCamera)
+  console.log(capturedImage)
   return (
     // navigation header
 <>
 
 
-{/* {previewVisible && capturedImage ? (
-            <CameraPreview photo={capturedImage} />
-          ) : (
-            <Camera
-              style={{flex: 1}}
-              ref={(r) => {
-                camera = r
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  width: '100%',
-                  backgroundColor: 'transparent',
-                  flexDirection: 'row'
-                }}
-              >
-                <View
-                  style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    flexDirection: 'row',
-                    flex: 1,
-                    width: '100%',
-                    padding: 20,
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <View
-                    style={{
-                      alignSelf: 'center',
-                      flex: 1,
-                      alignItems: 'center'
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={__takePicture}
-                      style={{
-                        width: 70,
-                        height: 70,
-                        bottom: 0,
-                        borderRadius: 50,
-                        backgroundColor: '#fff'
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
-            </Camera>
-          )} */}
+
 {previewVisible && capturedImage ? (
             <CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture}/>
           ) :
