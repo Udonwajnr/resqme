@@ -1,5 +1,5 @@
 import React,{useState,useRef, useEffect,useContext} from 'react'
-import { Text,TextInput,View,TouchableOpacity,Dimensions,StyleSheet,ScrollView,Alert,ImageBackground ,Image} from 'react-native'
+import { Text,TextInput,View,TouchableOpacity,Dimensions,StyleSheet,ScrollView,Alert,ImageBackground ,Image,ActivityIndicator} from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -9,6 +9,7 @@ import CameraPreview from '../components/CameraPreview';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
+import { Ionicons } from '@expo/vector-icons';
 
 const IncidentScreen = ({route,navigation}) => {
     const {userToken} =   useContext(AuthContext)
@@ -31,7 +32,7 @@ const IncidentScreen = ({route,navigation}) => {
     const [value, setValue] = useState(incident || null);
     const [isFocus, setIsFocus] = useState(false);
     const [natureOfIncident,setNatureOfIncident] = useState(incident)
-
+    const [loading,setLoading] = useState(false)
     // console.log(natureOfIncident)
   
     
@@ -62,14 +63,14 @@ const IncidentScreen = ({route,navigation}) => {
 
     const __startCamera = async () => {
       const {status} = await Camera.requestCameraPermissionsAsync()
-   if(status === 'granted'){
-     // do something
-     setStartCamera(true)
-   }else{
+    if(status === 'granted'){
+      // do something
+      setStartCamera(true)
+    }else{
      Alert.alert("Access denied")
-   }
+    }
     
-  }
+    }
 
   const __takePicture = async () => {
     if (!camera) return
@@ -122,18 +123,26 @@ const IncidentScreen = ({route,navigation}) => {
   const dataEntry = {incidentLocation,natureOfIncident,comment,fileUrl,user}
 
   const SubmitIncident = async()=>{
+    setLoading(true)
     await axios.post("https://emergency-backend-api.onrender.com/api/incident",dataEntry)
     .then((data)=>{
       setIncidentLocation("")
       setNatureOfIncident("")
       setComment("")
       setFileUrl(null)
+      setLoading(false)
       Alert.alert("YOu will be attended to as soon as Possible")
       navigation.navigate("Home")  
         console.log(data)
     }).catch((err)=>{
+      setLoading(true)
       console.log(err)
+      setLoading(false)
     })
+  }
+
+  function toggleCameraType() {
+    setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
   }
 
   React.useEffect(() => {
@@ -152,6 +161,7 @@ const IncidentScreen = ({route,navigation}) => {
   // console.log(address)
   
   
+  
   return (
   
 <>
@@ -164,7 +174,9 @@ const IncidentScreen = ({route,navigation}) => {
               ref={(r) => {
                 camera = r
               }}
+              type={type}
               className=""
+              ratio='16:9'
             >
               <TouchableOpacity
               style={{
@@ -173,7 +185,6 @@ const IncidentScreen = ({route,navigation}) => {
                 right: 0,
                 flexDirection: 'row',
                 flex: 1,
-                width: '100%',
                 padding: 20,
                 justifyContent: 'flex-end'
                 }}
@@ -182,7 +193,7 @@ const IncidentScreen = ({route,navigation}) => {
               >
               <AntDesign name="close" size={34} color="white" />
               </TouchableOpacity>
-  <View
+     <View
         style={{
         position: 'absolute',
         bottom: 0,
@@ -201,7 +212,6 @@ const IncidentScreen = ({route,navigation}) => {
         }}
         >
 
-
             <TouchableOpacity
             onPress={__takePicture}
             style={{
@@ -212,8 +222,25 @@ const IncidentScreen = ({route,navigation}) => {
             backgroundColor: '#fff'
             }}
             />
+
+            
     </View>
     </View>
+    <TouchableOpacity
+    style={{
+      position: 'absolute',
+      bottom: 28,
+      right:15,
+      flexDirection: 'row',
+      flex: 1,
+      padding: 1,
+      justifyContent: 'flex-end'
+      }}
+      onPress={toggleCameraType}
+    >
+      <Ionicons name="camera-reverse-sharp" size={35} color="white" />
+    </TouchableOpacity>
+
 
             </Camera>
       )}
@@ -258,7 +285,7 @@ const IncidentScreen = ({route,navigation}) => {
         </View>
 
         <View className="mt-5">
-            <Text>comment(optional)</Text>
+            <Text>Comment(optional)</Text>
             <TextInput
              multiline={true}
              numberOfLines={4}
@@ -272,7 +299,7 @@ const IncidentScreen = ({route,navigation}) => {
         </View>
           
       <View className="mt-5">
-        <View className="h-40 w-full border-[#cfd0d4] border-2 border-dotted justify-center items-center" >
+        <View className="relative h-40 w-full border-[#cfd0d4] border-2 border-dotted justify-center items-center" >
           {
             capturedImage === null?
           <TouchableOpacity onPress={__startCamera} className="justify-center items-center">
@@ -280,23 +307,38 @@ const IncidentScreen = ({route,navigation}) => {
             <Text> Photo Attachment </Text>
           </TouchableOpacity>
           :
-          <Image
-          source={{uri:fileUrl}}
-          style={{
-            flex: 1,
-          }}
-          className="h-32 w-32"
-          />
+          <View>
+            
 
+            <Image
+            source={{uri:fileUrl}}
+            style={{
+              flex: 1,
+            }}
+            className="h-32 w-32"
+            />
+
+          </View>
           }
+
+          {
+            capturedImage !== null
+             &&
+             <TouchableOpacity className="absolute z-10 top-3 right-3" onPress={()=>setCapturedImage(null)}>
+                <AntDesign name="close" size={24} color="black" />
+            </TouchableOpacity>
+          }
+
         </View>
     </View>
 
-    {/* <Text>{isFocused ? 'focused' : 'unfocused'}</Text> */}
-        
-
-        <TouchableOpacity className="h-9 mt-5 rounded-md bg-[#e43151] justify-center items-center" onPress={()=>SubmitIncident()}>
-                <Text className="text-white">Send Report</Text> 
+        <TouchableOpacity className="h-9 mt-5 rounded-md bg-[#e43151] justify-center items-center" onPress={()=>SubmitIncident()} disabled={loading ? true:false}>
+          {
+            loading?
+            <ActivityIndicator/>
+            :
+            <Text className="text-white">Send Report</Text> 
+          }
          </TouchableOpacity>
        </ScrollView>
     </View>

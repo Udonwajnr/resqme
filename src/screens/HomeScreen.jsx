@@ -31,12 +31,9 @@ const HomeScreen = ({navigation}) => {
           setErrorMsg('Permission to access location was denied');
           return;
         }
-        let location = await Location.getCurrentPositionAsync({});
+        let location = await Location.getCurrentPositionAsync();
          
-        const reverseGeoCodeAddress = await Location.reverseGeocodeAsync({
-                    longitude:location.coords.longitude,
-                    latitude:location.coords.latitude,  
-                }).then((data)=>{
+        const reverseGeoCodeAddress = await Location.reverseGeocodeAsync(location.coords).then((data)=>{
                     setAddress(data[0])
                 })
                 .catch((error)=>{
@@ -47,7 +44,7 @@ const HomeScreen = ({navigation}) => {
                 setLongitude(location.coords.longitude)      
       })();
 
-  },[])
+  },[location,address])
 
   useEffect(() => {
     onHandlePermission();
@@ -101,7 +98,7 @@ const HomeScreen = ({navigation}) => {
                     <Entypo name="location-pin" size={24} color="black" />
                 </View>
 
-                <View className="flex-col ">
+                <View className="flex-col wrap mr-7">
                     <Text className="text-[#b2b9c0]">Your Current Location</Text>
                     <Text className="font-bold break-words">{address.formattedAddress}</Text>
                 </View>
