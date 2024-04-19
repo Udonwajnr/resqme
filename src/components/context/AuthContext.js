@@ -55,6 +55,7 @@ export const AuthProvider =({children})=>{
     useEffect (()=>{
         isLoggedIn()
     },[])
+
     
     return(
         <AuthContext.Provider value={{login,logout,isLoading,userToken,setLoginLoader,loginLoader,userData,hasPermission, setHasPermission}}>

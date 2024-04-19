@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View,ImageBackground,TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View,ImageBackground,TouchableOpacity,ActivityIndicator } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
 
-const CameraPreview = ({photo ,retakePicture,savePhoto}) => {
-    console.log('sdsfds', photo)
+const CameraPreview = ({photo ,retakePicture,savePhoto,saved}) => {
+    // console.log('sdsfds', photo)
     
     return (
       <View
@@ -56,6 +56,7 @@ const CameraPreview = ({photo ,retakePicture,savePhoto}) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={savePhoto}
+              disabled={saved?true:false}
               style={{
                 width: 130,
                 height: 40,
@@ -64,14 +65,16 @@ const CameraPreview = ({photo ,retakePicture,savePhoto}) => {
                 borderRadius: 4
               }}
             >
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 20
-                }}
-              >
-                save photo
-              </Text>
+                {
+                  saved
+                  ?
+                  <ActivityIndicator/>
+                  :
+               <Text style={{
+                color: '#fff',
+                fontSize: 20
+              }}>save photo</Text> 
+                }
             </TouchableOpacity>
           </View>
         </View>

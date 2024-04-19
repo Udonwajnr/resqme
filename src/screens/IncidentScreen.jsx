@@ -1,19 +1,21 @@
-import React,{useState,useRef, useEffect} from 'react'
-import { Text,TextInput,View,TouchableOpacity,Dimensions,StyleSheet,ScrollView,Alert,ImageBackground } from 'react-native'
+import React,{useState,useRef, useEffect,useContext} from 'react'
+import { Text,TextInput,View,TouchableOpacity,Dimensions,StyleSheet,ScrollView,Alert,ImageBackground ,Image} from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Camera,CameraType} from 'expo-camera';
 import { AuthContext } from '../components/context/AuthContext';
 import CameraPreview from '../components/CameraPreview';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
+
 const IncidentScreen = ({route,navigation}) => {
-    const {incident} = route.params
+    const {userToken} =   useContext(AuthContext)
+    const {incident,address} = route.params
+    const user = userToken._id
 
     const isFocused = useIsFocused();
-    
     const WINDOW_HEIGHT = Dimensions.get('window').height;
     const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
     const cameraRef = useRef();
@@ -22,6 +24,18 @@ const IncidentScreen = ({route,navigation}) => {
     const [startCamera,setStartCamera] = useState(false) 
     const [previewVisible, setPreviewVisible] = useState(false)
     const [capturedImage, setCapturedImage] = useState(null)
+    const [saved,setSaved] = useState(false)
+    const [fileUrl,setFileUrl] = useState(null)
+    const [incidentLocation,setIncidentLocation] = useState(address.formattedAddress||"")
+    const [comment,setComment] = useState("")
+    const [value, setValue] = useState(incident || null);
+    const [isFocus, setIsFocus] = useState(false);
+    const [natureOfIncident,setNatureOfIncident] = useState(incident)
+
+    // console.log(natureOfIncident)
+  
+    
+
     let camera = Camera
     const data = [
         { label: 'Medical', value: 'Medical' },
@@ -31,9 +45,9 @@ const IncidentScreen = ({route,navigation}) => {
         { label: 'Violence', value: 'Violence' },
         { label: 'Search And Rescue', value: 'Search And Rescue' },
       ];
-      const [value, setValue] = useState(null);
-      const [isFocus, setIsFocus] = useState(false);
-    
+      
+      
+
     const renderLabel = () => {
       if (value || isFocus) {
         return (
@@ -72,6 +86,7 @@ const IncidentScreen = ({route,navigation}) => {
   }
 
   const __savePhoto=async(url)=>{
+    setSaved(true)
     let base64Img = `data:image/jpg;base64,${capturedImage.base64}`;
     let data = {
       file: base64Img,
@@ -79,44 +94,69 @@ const IncidentScreen = ({route,navigation}) => {
     };
     await axios.post("https://api.cloudinary.com/v1_1/djwombdbg/image/upload",data)
     .then((res)=>{
+      setSaved(true)
+      setFileUrl(res?.data?.url)
       Alert.alert("upload successful")
-      console.log(res)
+      console.log(res.data.url)
+      setSaved(false)
     }).catch((err)=>{
       Alert.alert("upload not Successful")
       console.log(error)
+      setSaved(false)
+
     })
     
     console.log(" picture saved")
     setStartCamera(false)
     setPreviewVisible(false)
-    setCapturedImage(false)
+    // setCapturedImage(false)
   }
 
   const cancelCamera =()=>{
     setStartCamera(false)
   }
-  const setCamara =()=>{
-    setStartCamera(false)
+  // const setCamara =()=>{
+  //   setStartCamera(false)
+  // }
+
+  const dataEntry = {incidentLocation,natureOfIncident,comment,fileUrl,user}
+
+  const SubmitIncident = async()=>{
+    await axios.post("https://emergency-backend-api.onrender.com/api/incident",dataEntry)
+    .then((data)=>{
+      setIncidentLocation("")
+      setNatureOfIncident("")
+      setComment("")
+      setFileUrl(null)
+      Alert.alert("YOu will be attended to as soon as Possible")
+      navigation.navigate("Home")  
+        console.log(data)
+    }).catch((err)=>{
+      console.log(err)
+    })
   }
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
      setStartCamera(false)
     });
-
+    
     // Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation]);
 
-  console.log(capturedImage)
+  useEffect(()=>{
+      setNatureOfIncident(incident)
+  },[address,incident])
+  // console.log(capturedImage.ur)
+  // console.log(address)
+  
+  
   return (
-    // navigation header
+  
 <>
-
-
-
 {previewVisible && capturedImage ? (
-            <CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture}/>
+            <CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture} saved={saved}/>
           ) :
           isFocused && startCamera && (
             <Camera
@@ -124,7 +164,7 @@ const IncidentScreen = ({route,navigation}) => {
               ref={(r) => {
                 camera = r
               }}
-              className="  "
+              className=""
             >
               <TouchableOpacity
               style={{
@@ -184,7 +224,7 @@ const IncidentScreen = ({route,navigation}) => {
               <Text>Incident location</Text>
               <View className="flex px-2 mt-2 flex-row items-center bg-[#ecedf0]">
                       <Entypo name="location-pin" size={24} color="black" />
-                      <TextInput className="flex-1 h-9 pl-3 rounded-md text-[#535355]" selectionColor={'#535355'} placeholder='johndoe@gmail.com'/>
+                      <TextInput onChangeText={text=>setIncidentLocation(text)} defaultValue={address.formattedAddress} className="flex-1 h-9 pl-3 rounded-md text-[#535355]" selectionColor={'#535355'} placeholder='johndoe@gmail.com'/>
               </View>
           </View>
 
@@ -211,14 +251,14 @@ const IncidentScreen = ({route,navigation}) => {
             setValue(item.value);
             setIsFocus(false);
           }}
-          disable={true}
+          disable={false}
           
         />
              </View>
         </View>
 
         <View className="mt-5">
-            <Text>Comment(optional)</Text>
+            <Text>comment(optional)</Text>
             <TextInput
              multiline={true}
              numberOfLines={4}
@@ -226,23 +266,36 @@ const IncidentScreen = ({route,navigation}) => {
              selectionColor={'#535355'}
              placeholder='Leave a comment'
              style={{ height:200, textAlignVertical: 'top'}}
+             defaultValue={comment}
+             onChangeText={text=>setComment(text)}
              />
         </View>
           
-       
       <View className="mt-5">
         <View className="h-40 w-full border-[#cfd0d4] border-2 border-dotted justify-center items-center" >
+          {
+            capturedImage === null?
           <TouchableOpacity onPress={__startCamera} className="justify-center items-center">
               <MaterialCommunityIcons name="camera-plus-outline" size={24} color="black" />
             <Text> Photo Attachment </Text>
           </TouchableOpacity>
+          :
+          <Image
+          source={{uri:fileUrl}}
+          style={{
+            flex: 1,
+          }}
+          className="h-32 w-32"
+          />
+
+          }
         </View>
     </View>
 
     {/* <Text>{isFocused ? 'focused' : 'unfocused'}</Text> */}
         
 
-        <TouchableOpacity className="h-9 mt-5 rounded-md bg-[#e43151] justify-center items-center">
+        <TouchableOpacity className="h-9 mt-5 rounded-md bg-[#e43151] justify-center items-center" onPress={()=>SubmitIncident()}>
                 <Text className="text-white">Send Report</Text> 
          </TouchableOpacity>
        </ScrollView>
