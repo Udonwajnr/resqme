@@ -68,7 +68,7 @@ const CameraPreview = ({photo ,retakePicture,savePhoto,saved}) => {
                 {
                   saved
                   ?
-                  <ActivityIndicator/>
+                  <ActivityIndicator color={"white"}/>
                   :
                <Text style={{
                 color: '#fff',

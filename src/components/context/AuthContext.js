@@ -38,7 +38,6 @@ export const AuthProvider =({children})=>{
         setIsLoading(false)
     }
 
-    console.log(userToken)
 
     const isLoggedIn=async()=>{
         try{

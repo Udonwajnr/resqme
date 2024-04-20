@@ -7,6 +7,8 @@ import IncidentScreen from '../screens/IncidentScreen';
 import BackButton from '../components/BackButton';
 import { Feather } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import AddEmergencyContactScreen from '../screens/AddEmergencyContactScreen';
+import ContactBackButton from '../components/ContactBackButton';
 const Tab = createBottomTabNavigator();
 
 export default function AppStack() {
@@ -68,11 +70,21 @@ export default function AppStack() {
     }} 
     />
 
-    <Tab.Screen name="More" component={IncidentScreen} options={{
-            tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
-            headerShown:false,
+    <Tab.Screen name="AddEmergencyContact" component={AddEmergencyContactScreen} options={{
+            // tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
+            headerShown:true,
             tabBarButton: () => null,
             tabBarStyle: { display: "none" },
+            headerTitle:"Add Emergency Contact",
+            headerTitleAlign: 'center',
+            headerTitleStyle:{
+              fontWeight:"bold",
+              fontSize:17,
+              color:'black', 
+              textAlign:"left",
+          },
+          headerLeft: (navigation) => <ContactBackButton/>,
+          
     }} 
     />
 

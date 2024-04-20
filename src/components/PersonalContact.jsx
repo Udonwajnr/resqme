@@ -1,88 +1,42 @@
-import React from 'react'
-import { View,Text,TouchableOpacity } from 'react-native'
+import React, { useEffect,useState ,useContext} from 'react'
+import { View,Text,TouchableOpacity,StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import axios from 'axios';
+import { AuthContext } from './context/AuthContext';
+import ContactCard from './ContactCard';
 
 const PersonalContact = () => {
-  return (
+    const {userToken} = useContext(AuthContext)
+    const user = userToken._id
+    const [usersContacts,setUsersContact] = useState([])
+    const contacts =async()=>{
+        await axios(`https://emergency-backend-api.onrender.com/api/user/${user}`)
+        .then((res)=>{
+            console.log(res.data)   
+            setUsersContact(res.data.contact)
+        })
+        .catch((err)=>{
+            console.loge(err)
+        })
+    }
+
+    useEffect(()=>{
+        contacts()
+    },[])
+
+    console.log(usersContacts)
+    return (
     <View className="mt-3">
-        <View className=" flex-row justify-between py-3">
-            <TouchableOpacity className="flex-row items-center gap-3">
-                <Entypo name="user" size={18} color="black" />
-                <View>
-                    <Text className="text-base">Dad</Text>
-                    <Text className="text-[#cecfd1]">+23412345678</Text>
-                </View>
-            </TouchableOpacity>
-
-            <View className="flex-row items-center gap-3">
-                <TouchableOpacity>
-                    <Ionicons name="call-outline" size={18} color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                <Entypo name="dots-three-vertical" size={17} color="#cecfd1" />
-                </TouchableOpacity>
-            </View>
-        </View>
-
-        <View className=" flex-row justify-between py-3">
-            <TouchableOpacity className="flex-row items-center gap-3">
-                <Entypo name="user" size={18} color="black" />
-                <View>
-                    <Text className="text-base">Mum</Text>
-                    <Text className="text-[#cecfd1]">+23412345678</Text>
-                </View>
-            </TouchableOpacity>
-
-            <View className="flex-row items-center gap-3">
-                <TouchableOpacity>
-                    <Ionicons name="call-outline" size={18} color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                <Entypo name="dots-three-vertical" size={17} color="#cecfd1" />
-                </TouchableOpacity>
-            </View>
-        </View>
-
-        <View className=" flex-row justify-between py-3">
-            <TouchableOpacity className="flex-row items-center gap-3">
-                <Entypo name="user" size={18} color="black" />
-                <View>
-                    <Text className="text-base">Junior</Text>
-                    <Text className="text-[#cecfd1]">+23412345678</Text>
-                </View>
-            </TouchableOpacity>
-
-            <View className="flex-row items-center gap-3">
-                <TouchableOpacity>
-                    <Ionicons name="call-outline" size={18} color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                <Entypo name="dots-three-vertical" size={17} color="#cecfd1" />
-                </TouchableOpacity>
-            </View>
-        </View>
-
-        <View className=" flex-row justify-between py-3">
-            <TouchableOpacity className="flex-row items-center gap-3">
-                <Entypo name="user" size={18} color="black" />
-                <View>
-                    <Text className="text-base">Aunty Bella</Text>
-                    <Text className="text-[#cecfd1]">+23412345678</Text>
-                </View>
-            </TouchableOpacity>
-
-            <View className="flex-row items-center gap-3">
-                <TouchableOpacity>
-                    <Ionicons name="call-outline" size={18} color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                <Entypo name="dots-three-vertical" size={17} color="#cecfd1" />
-                </TouchableOpacity>
-            </View>
-        </View>
-
-        
+        {
+            usersContacts.map((contact,index)=>{
+                return(
+                    <ContactCard contact={contact}/> 
+                )
+            })
+        }
     </View>
   )
 }

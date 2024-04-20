@@ -31,20 +31,18 @@ const HomeScreen = ({navigation}) => {
           setErrorMsg('Permission to access location was denied');
           return;
         }
-        let location = await Location.getCurrentPositionAsync();
+        let currentLocation = await Location.getCurrentPositionAsync();
          
-        const reverseGeoCodeAddress = await Location.reverseGeocodeAsync(location.coords).then((data)=>{
+        const reverseGeoCodeAddress = await Location.reverseGeocodeAsync(currentLocation.coords).then((data)=>{
                     setAddress(data[0])
                 })
                 .catch((error)=>{
                     console.log("check your data connection")
                 })
-                setLocation(location);
-                setLatitude(location.coords.latitude)
-                setLongitude(location.coords.longitude)      
+                setLocation(currentLocation);
       })();
 
-  },[location,address])
+  },[])
 
   useEffect(() => {
     onHandlePermission();

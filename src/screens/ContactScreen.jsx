@@ -5,6 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import PublicContact from '../components/PublicContact';
 import PersonalContact from '../components/PersonalContact';
 import {TabView, SceneMap,TabBar} from "react-native-tab-view"
+import axios from 'axios';
 
 const FirstRoute = () => (
     <PublicContact/>
@@ -29,7 +30,7 @@ const FirstRoute = () => (
       
     />
   );
-const ContactScreen = () => {
+const ContactScreen = ({navigation}) => {
     const layout = useWindowDimensions();
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
@@ -41,8 +42,8 @@ const ContactScreen = () => {
     <SafeAreaView className="flex-1 px-4 flex-col py-2 bg-white">
         <View className="flex-row justify-between mb-5">
             <Text>Emergency Contacts</Text>
-            <AntDesign name="search1" size={18} color="black" />
-            <TouchableOpacity className="flex-row items-center gap-2 ">
+            {/* <AntDesign name="search1" size={18} color="black" /> */}
+            <TouchableOpacity className="flex-row items-center gap-2 " onPress={()=>navigation.navigate("AddEmergencyContact")}>
                 <AntDesign name="plus" size={18} color="#c72020" />
                 <Text className={"text-[#c72020]"}>New Contact</Text>
             </TouchableOpacity>
@@ -55,10 +56,6 @@ const ContactScreen = () => {
       style={{backgroundColor: 'white',}}
       renderTabBar={renderTabBar}
     />
-        
-
-
-
     </SafeAreaView>
   )
 }
