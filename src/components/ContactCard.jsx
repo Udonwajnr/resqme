@@ -7,11 +7,11 @@ import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { AuthContext } from './context/AuthContext';
 
-const ContactCard = () => {
+const ContactCard = ({contact,setSelectedIndex,selectedIndex,index}) => {
     const [active,setActive] = useState(false)
 
     const isNotActive=()=>{
-        setActive(!active)
+        setActive(()=>selectedIndex!==index? !active:true)
     }
     
   return (
@@ -19,8 +19,8 @@ const ContactCard = () => {
     <TouchableOpacity className="flex-row items-center gap-3">
         <Entypo name="user" size={18} color="black" />
         <View>
-            <Text className="text-base">Dad</Text>
-            <Text className="text-[#cecfd1]">+23412345678</Text>
+            <Text className="text-base">{contact.fullName.length > 7?contact?.fullName?.slice(0,8) +'...':contact.fullName}</Text>
+            <Text className="text-[#cecfd1]">{contact.phoneNumber}</Text>
         </View>
     </TouchableOpacity>
 
@@ -30,7 +30,7 @@ const ContactCard = () => {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={isNotActive}>
-        <Entypo name="dots-three-vertical" size={17} color="#cecfd1" />
+        <   Entypo name="dots-three-vertical" size={17} color="#cecfd1" />
         </TouchableOpacity>
     </View>
     {

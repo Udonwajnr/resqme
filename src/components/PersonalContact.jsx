@@ -1,9 +1,5 @@
 import React, { useEffect,useState ,useContext} from 'react'
-import { View,Text,TouchableOpacity,StyleSheet } from 'react-native'
-import { Ionicons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { View,Text,TouchableOpacity,StyleSheet,ActivityIndicator } from 'react-native'
 import axios from 'axios';
 import { AuthContext } from './context/AuthContext';
 import ContactCard from './ContactCard';
@@ -12,30 +8,39 @@ const PersonalContact = () => {
     const {userToken} = useContext(AuthContext)
     const user = userToken._id
     const [usersContacts,setUsersContact] = useState([])
+    const [loading,setLoading] = useState(false)
+    const [selectedIndex,setSelectedIndex] = useState(0) 
+
     const contacts =async()=>{
         await axios(`https://emergency-backend-api.onrender.com/api/user/${user}`)
         .then((res)=>{
+            setLoading(true)
             console.log(res.data)   
             setUsersContact(res.data.contact)
+            setLoading(false)
         })
         .catch((err)=>{
+            setLoading(true)
             console.loge(err)
+            setLoading(false)
         })
     }
-
     useEffect(()=>{
         contacts()
     },[])
 
-    console.log(usersContacts)
     return (
     <View className="mt-3">
         {
+            !loading?
             usersContacts.map((contact,index)=>{
                 return(
-                    <ContactCard contact={contact}/> 
+                    <ContactCard key={contact._id} contact={contact} index={index} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex}/> 
                 )
-            })
+            }
+        )
+        :
+         <ActivityIndicator color={"red"} size={'large'}/>
         }
     </View>
   )

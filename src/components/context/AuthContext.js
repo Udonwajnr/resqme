@@ -51,8 +51,19 @@ export const AuthProvider =({children})=>{
         }
     }
 
-    useEffect (()=>{
+    const LoadData=async()=>{
+        await axios.get("https://emergency-backend-api.onrender.com/api/user")
+        .then(()=>{
+            console.log("Api KickStart successful")
+        })
+        .catch((err)=>{
+            console.log("Api KickStart not successful")
+        })
+    }
+    
+    useEffect(()=>{
         isLoggedIn()
+        LoadData()
     },[])
 
     
