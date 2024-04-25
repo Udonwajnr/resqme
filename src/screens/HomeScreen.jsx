@@ -71,7 +71,7 @@ const HomeScreen = ({navigation}) => {
         </View>
 
         <View className="px-4">
-            <View className="mt-9">
+            <View className="mt-8">
                 <Text className="text-center text-xl font-bold">Are you in an Emergency?</Text>
                 <Text className="text-center text-[#b2b9c0] mt-3">Press the sos button ,your live location will be shared with the nearest help center and your emergency contact.</Text>            
             

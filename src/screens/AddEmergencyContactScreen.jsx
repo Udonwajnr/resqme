@@ -5,49 +5,94 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {useFonts} from "expo-font"
 import { Feather } from '@expo/vector-icons';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import { AuthContext } from '../components/context/AuthContext';
 
-const AddEmergencyContactScreen = ({navigation}) => {
+const AddEmergencyContactScreen = ({navigation,route}) => {
+    
+    const [editData,setEditData] = useState({})
     const {userToken} = useContext(AuthContext)
     const user = userToken._id
+    const [userData,setUserData]= useState({})
     const [fullName,setFullName] = useState("")
     const [phoneNumber,setPhoneNumber] = useState("")
     const [email,setEmail] = useState("")
     const [relationship,setRelationship] = useState("")
     const [loading,setLoading] = useState(false)
-
-
+    
+    // console.log(fullName)
+    const data = {fullName,phoneNumber,email,relationship,user}
+        // console.log({...data})
     const submitEmergency =async()=>{
         const data = {fullName,phoneNumber,email,relationship,user}
         setLoading(true)
-        await axios.post("https://emergency-backend-api.onrender.com/api/contact",data)
-        .then((data)=>{
-            setLoading(true)
-            console.log(data)
-            Alert.alert("Contact created successfully")
-            navigation.navigate("Contact")
-            setLoading(false)
+        if(editData){
+            await axios.put(`https://emergency-backend-api.onrender.com/api/contact/${editData}`,{...data})
+            .then((data)=>{
+                setLoading(true)
+                // console.log(_iddata)
+                Alert.alert("Contact edited successfully")
+                navigation.navigate("Contact")
+                setLoading(false)
+                console.log(data)
+            })
+            .catch((err)=>{
+                setLoading(true)
+                console.log(err)
+                setLoading(false)
+            })
         }
+
+        else{
+            await axios.post("https://emergency-backend-api.onrender.com/api/contact",data)
+            .then((data)=>{
+                setLoading(true)
+                setFullName('')
+                setPhoneNumber("")
+                setEmail("")
+                setRelationship("")
+                setLoading(false)
+                console.log(data)
+                Alert.alert("Contact created successfully")
+                navigation.navigate("Contact")
+                setLoading(false)
+            }
         )
         .catch((err)=>{
             setLoading(true)
             console.log(err)
             setLoading(false)
-        })
+        })}
     }
 
-    React.useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-         setFullName('')
-         setPhoneNumber("")
-         setEmail("")
-         setRelationship("")
-         setLoading(false)
-        });
-        // Return the function to unsubscribe from the event so it gets removed on unmount
-        return unsubscribe;
-      }, [navigation]);
+
+    // React.useEffect(() => {
+    //     const unsubscribe = navigation.addListener('focus', () => {
+         
+    //     });
+    //     // Return the function to unsubscribe from the event so it gets removed on unmount
+    //     return unsubscribe;
+    //   }, [navigation]);
+
+      useEffect(()=>{
+        if(route.params?.contact){
+            const {contact} = route.params
+            // setEditData(contact)
+            axios.get(`https://emergency-backend-api.onrender.com/api/contact/${contact._id}`)
+            .then((data)=>{
+                console.log(data)
+                setUserData(data.data)
+                setFullName(data.data.fullName)
+                setEmail(data.data.email)
+                setRelationship(data.data.relationship)
+                setPhoneNumber(data.data.phoneNumber)
+                setEditData(data.data._id)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+        }
+      },[])
 
   return (
     <ScrollView className="flex-1 flex-col bg-slate-50 py-2.5 px-4">
@@ -85,16 +130,14 @@ const AddEmergencyContactScreen = ({navigation}) => {
          />
     </View>
 
-    <TouchableOpacity onPress={submitEmergency} className="h-9 mt-9 rounded-md  bg-[#e43151] justify-center items-center" >
+    <TouchableOpacity onPress={submitEmergency} className="h-9 mt-9 rounded-md  bg-[#e43151] justify-center items-center" disabled={loading?true:false}>
         {
             loading?
             <ActivityIndicator color={"white"}/>
             :
-            <Text className="text-white">Add Contact</Text> 
+            <Text className="text-white">{editData?"Update Contact":"Add Contact"}</Text> 
         }
     </TouchableOpacity>
-
-
 </ScrollView>
   )
 }

@@ -3,6 +3,7 @@ import { View,Text,TouchableOpacity,StyleSheet,ActivityIndicator } from 'react-n
 import axios from 'axios';
 import { AuthContext } from './context/AuthContext';
 import ContactCard from './ContactCard';
+import { useNavigation } from '@react-navigation/native';
 
 const PersonalContact = () => {
     const {userToken} = useContext(AuthContext)
@@ -11,11 +12,13 @@ const PersonalContact = () => {
     const [loading,setLoading] = useState(false)
     const [selectedIndex,setSelectedIndex] = useState(0) 
 
+    const navigation = useNavigation()
+
     const contacts =async()=>{
-        await axios(`https://emergency-backend-api.onrender.com/api/user/${user}`)
+        await axios.get(`https://emergency-backend-api.onrender.com/api/user/${user}`)
         .then((res)=>{
             setLoading(true)
-            console.log(res.data)   
+            // console.log(res.data)   
             setUsersContact(res.data.contact)
             setLoading(false)
         })
@@ -29,13 +32,23 @@ const PersonalContact = () => {
         contacts()
     },[])
 
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+         setSelectedIndex(0)
+         contacts()
+
+        });
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+      }, [navigation]);
+
     return (
     <View className="mt-3">
         {
             !loading?
             usersContacts.map((contact,index)=>{
                 return(
-                    <ContactCard key={contact._id} contact={contact} index={index} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex}/> 
+                    <ContactCard key={contact._id} usersContacts={usersContacts} contact={contact} index={index} setUsersContact={setUsersContact} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex}/> 
                 )
             }
         )
