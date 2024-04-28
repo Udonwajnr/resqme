@@ -1,7 +1,6 @@
 import React from 'react'
 import { Text, TouchableOpacity,View,useWindowDimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { AntDesign } from '@expo/vector-icons';
 import PublicContact from '../components/PublicContact';
 import PersonalContact from '../components/PersonalContact';
 import {TabView, SceneMap,TabBar} from "react-native-tab-view"
@@ -40,13 +39,9 @@ const ContactScreen = ({navigation}) => {
 
   return (
     <SafeAreaView className="flex-1 px-4 flex-col py-2 bg-white">
-        <View className="flex-row justify-between mb-5">
-            <Text>Emergency Contacts</Text>
+        <View className="flex-row justify-between mb-5 ">
+            <Text className="text-xl">Emergency Contacts</Text>
             {/* <AntDesign name="search1" size={18} color="black" /> */}
-            <TouchableOpacity className="flex-row items-center gap-2 " onPress={()=>navigation.navigate("AddEmergencyContact")}>
-                <AntDesign name="plus" size={18} color="#c72020" />
-                <Text className={"text-[#c72020]"}>New Contact</Text>
-            </TouchableOpacity>
         </View>
         <TabView
       navigationState={{ index, routes }}

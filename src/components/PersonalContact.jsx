@@ -4,6 +4,8 @@ import axios from 'axios';
 import { AuthContext } from './context/AuthContext';
 import ContactCard from './ContactCard';
 import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
+
 
 const PersonalContact = () => {
     const {userToken} = useContext(AuthContext)
@@ -44,6 +46,10 @@ const PersonalContact = () => {
 
     return (
     <View className="mt-3">
+        <TouchableOpacity className="flex-row items-center gap-2 mb-5" onPress={()=>navigation.navigate("AddEmergencyContact")}>
+                <AntDesign name="plus" size={18} color="#c72020" />
+                <Text className={"text-[#c72020]"}>New Contact</Text>
+            </TouchableOpacity>
         {
             !loading?
             usersContacts.map((contact,index)=>{

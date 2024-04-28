@@ -4,12 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
 const PublicContact = () => {
-    const policeEmergencyCall = (number) => {
+    const policeEmergencyCall = () => {
         // Replace '911' with your country's emergency number if different
-        const emergencyNumber = number;
+        // const emergencyNumber = number;
         
         // Construct the phone call URL
-        const phoneCallUrl = `tel:${number}`;
+        const phoneCallUrl = `tel:${"08036068934"}`;
     
         // Attempt to open the phone call URL
         Linking.openURL(phoneCallUrl)
@@ -21,12 +21,10 @@ const PublicContact = () => {
           });
       };
 
-      const fireServiceEmergencyCall = (number) => {
-        // Replace '911' with your country's emergency number if different
-        const emergencyNumber = number;
-        
+      const fireServiceEmergencyCall = () => {
+
         // Construct the phone call URL
-        const phoneCallUrl = `tel:${number}`;
+        const phoneCallUrl = `tel:${"09014318996"}`;
     
         // Attempt to open the phone call URL
         Linking.openURL(phoneCallUrl)
@@ -38,12 +36,12 @@ const PublicContact = () => {
           });
       };
 
-      const HealthCareEmergencyCall = (number) => {
+      const HealthCareEmergencyCall = () => {
         // Replace '911' with your country's emergency number if different
-        const emergencyNumber = number;
+        // const emergencyNumber = number;
         
         // Construct the phone call URL
-        const phoneCallUrl = `tel:${number}`;
+        const phoneCallUrl = `tel:${"08022900345"}`;
     
         // Attempt to open the phone call URL
         Linking.openURL(phoneCallUrl)
@@ -59,7 +57,7 @@ const PublicContact = () => {
     <View className="mt-3">
         {/* police */}
         <View className=" flex-row justify-between py-3">
-            <TouchableOpacity className="flex-row items-center gap-2">
+            <TouchableOpacity className="flex-row items-center gap-2" onPress={policeEmergencyCall}>
                 <Text >&#128660;</Text>
                 <Text className="text-base">Police</Text>
             </TouchableOpacity>
@@ -68,42 +66,42 @@ const PublicContact = () => {
                 <TouchableOpacity>
                     <Ionicons name="call-outline" size={18} color="black" />
                 </TouchableOpacity>
-                <Entypo name="chevron-small-right" size={20} color="#cecfd1" />
+                {/* <Entypo name="chevron-small-right" size={20} color="#cecfd1" /> */}
             </View>
         </View>
 
         {/* fire service */}
         <View className="flex-row justify-between py-3">
-            <TouchableOpacity className="flex-row items-center gap-2">
+            <TouchableOpacity className="flex-row items-center gap-2" onPress={fireServiceEmergencyCall}>
                 <Text>&#128658;</Text>
                 <Text className="text-base">Fire Service</Text>
             </TouchableOpacity>
 
-            <View className="flex-row items-center">
-                <TouchableOpacity>
+            <View className="flex-row items-center" >
+                <TouchableOpacity onPress={fireServiceEmergencyCall}>
                     <Ionicons name="call-outline" size={18} color="black" />
                 </TouchableOpacity>
-                <Entypo name="chevron-small-right" size={20} color="#cecfd1" />
+                {/* <Entypo name="chevron-small-right" size={20} color="#cecfd1" /> */}
             </View>
         </View>
 
         {/* Hospital */}
         <View className="flex-row justify-between py-3">
-            <TouchableOpacity className="flex-row items-center gap-2">
+            <TouchableOpacity className="flex-row items-center gap-2" onPress={HealthCareEmergencyCall}>
                 <Text>&#127973;</Text>
                 <Text>Hospital</Text>
             </TouchableOpacity>
 
             <View className="flex-row items-center">
-                <TouchableOpacity>
+                <TouchableOpacity onPress={HealthCareEmergencyCall}>
                     <Ionicons name="call-outline" size={18} color="black" />
                 </TouchableOpacity>
-                <Entypo name="chevron-small-right" size={20} color="#cecfd1"/>
+                {/* <Entypo name="chevron-small-right" size={20} color="#cecfd1"/> */}
             </View>
         </View>
 
         {/* emergency*/}
-        <View className="flex-row justify-between py-3">
+        {/* <View className="flex-row justify-between py-3">
             <TouchableOpacity className="flex-row items-center gap-2">
                 <Text>&#128226;</Text>
                 <Text>Emergency Management</Text>
@@ -115,7 +113,7 @@ const PublicContact = () => {
                 </TouchableOpacity>
                 <Entypo name="chevron-small-right" size={20} color="#ecedf0" />
             </View>
-        </View>
+        </View> */}
 
         {/* police */}
         {/* <View>

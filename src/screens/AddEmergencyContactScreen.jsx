@@ -56,6 +56,7 @@ const AddEmergencyContactScreen = ({navigation,route}) => {
                 Alert.alert("Contact created successfully")
                 navigation.navigate("Contact")
                 setLoading(false)
+                setEditData({})
             }
         )
         .catch((err)=>{
@@ -91,8 +92,16 @@ const AddEmergencyContactScreen = ({navigation,route}) => {
             .catch((err)=>{
                 console.log(err)
             })
+        }else{
+                setLoading(false)
+                setFullName('')
+                setPhoneNumber("")
+                setEmail("")
+                setRelationship("")
+                setPhoneNumber("")
+                setEditData("")
         }
-      },[])
+      },[route.params])
 
   return (
     <ScrollView className="flex-1 flex-col bg-slate-50 py-2.5 px-4">

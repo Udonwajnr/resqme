@@ -9,6 +9,7 @@ import { Feather } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import AddEmergencyContactScreen from '../screens/AddEmergencyContactScreen';
 import ContactBackButton from '../components/ContactBackButton';
+import MapScreen from "../screens/MapScreen"
 const Tab = createBottomTabNavigator();
 
 export default function AppStack() {
@@ -73,6 +74,24 @@ export default function AppStack() {
     <Tab.Screen name="AddEmergencyContact" component={AddEmergencyContactScreen} options={{
             // tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
             headerShown:true,
+            tabBarButton: () => null,
+            tabBarStyle: { display: "none" },
+            headerTitle:"Add Emergency Contact",
+            headerTitleAlign: 'center',
+            headerTitleStyle:{
+              fontWeight:"bold",
+              fontSize:17,
+              color:'black', 
+              textAlign:"left",
+          },
+          headerLeft: (navigation) => <ContactBackButton/>,
+          
+    }} 
+    />
+
+<Tab.Screen name="MapScreen" component={MapScreen} options={{
+            // tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
+            headerShown:false,
             tabBarButton: () => null,
             tabBarStyle: { display: "none" },
             headerTitle:"Add Emergency Contact",
