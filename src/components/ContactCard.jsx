@@ -64,7 +64,7 @@ const ContactCard = ({contact,setSelectedIndex,selectedIndex,index,setUsersConta
     </TouchableOpacity>
 
     <View className="flex-row items-center gap-3">
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>handleEmergencyCall(contact.phoneNumber)}>
             <Ionicons name="call-outline" size={18} color="black" />
         </TouchableOpacity>
 

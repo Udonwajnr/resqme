@@ -1,9 +1,60 @@
 import React from 'react'
-import { Text, View,TouchableOpacity } from 'react-native'
+import { Text, View,TouchableOpacity,Linking } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
 const PublicContact = () => {
+    const policeEmergencyCall = (number) => {
+        // Replace '911' with your country's emergency number if different
+        const emergencyNumber = number;
+        
+        // Construct the phone call URL
+        const phoneCallUrl = `tel:${number}`;
+    
+        // Attempt to open the phone call URL
+        Linking.openURL(phoneCallUrl)
+          .then(() => {
+            console.log('Phone call initiated');
+          })
+          .catch((error) => {
+            console.error('Failed to initiate phone call', error);
+          });
+      };
+
+      const fireServiceEmergencyCall = (number) => {
+        // Replace '911' with your country's emergency number if different
+        const emergencyNumber = number;
+        
+        // Construct the phone call URL
+        const phoneCallUrl = `tel:${number}`;
+    
+        // Attempt to open the phone call URL
+        Linking.openURL(phoneCallUrl)
+          .then(() => {
+            console.log('Phone call initiated');
+          })
+          .catch((error) => {
+            console.error('Failed to initiate phone call', error);
+          });
+      };
+
+      const HealthCareEmergencyCall = (number) => {
+        // Replace '911' with your country's emergency number if different
+        const emergencyNumber = number;
+        
+        // Construct the phone call URL
+        const phoneCallUrl = `tel:${number}`;
+    
+        // Attempt to open the phone call URL
+        Linking.openURL(phoneCallUrl)
+          .then(() => {
+            console.log('Phone call initiated');
+          })
+          .catch((error) => {
+            console.error('Failed to initiate phone call', error);
+          });
+      };
+
   return (
     <View className="mt-3">
         {/* police */}

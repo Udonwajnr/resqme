@@ -7,6 +7,8 @@ import {PulseAnimation} from 'react-native-animated-pulse';
 import { AuthContext } from '../components/context/AuthContext';
 import { AntDesign } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import * as SMS from 'expo-sms';
+import timestamp from 'time-stamp';
 
 import { Camera } from 'expo-camera';
 
@@ -23,7 +25,7 @@ const HomeScreen = ({navigation}) => {
   const [accident,setAccident] = useState("Accident")
   const [violence,setViolence] = useState("Violence")
   const [searchAndRescue,setSearchAndRescue] = useState("Search And Rescue")
-
+    console.log(userToken)
   useEffect(()=>{
     (async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
@@ -60,7 +62,18 @@ const HomeScreen = ({navigation}) => {
   } else if (location) {
     text = JSON.stringify(location);
   }
-  
+
+  const emergencySms =async()=>{
+    const isAvailable = SMS.isAvailableAsync();
+    if (isAvailable) {
+        await SMS.sendSMSAsync("08107555479",       
+        `${userToken.fullName}.\nEmergency:Quick Response. \nLocation: ${address.formattedAddress}.\nI am in an emergency situation and need immediate assistance. Please help!
+        `
+    )
+    } else {
+        console.log("There is no sms on this device")
+    }
+  }
     return (
     <SafeAreaView className="flex-1 flex-col bg-slate-50 py-3.5">
         <View className="flex-row justify-between px-4">
@@ -76,7 +89,7 @@ const HomeScreen = ({navigation}) => {
                 <Text className="text-center text-[#b2b9c0] mt-3">Press the sos button ,your live location will be shared with the nearest help center and your emergency contact.</Text>            
             
                 <View className="flex-row justify-center items-center my-5">
-                    <TouchableOpacity className="bg-[#c72020] w-40 h-40 rounded-full flex-col justify-center items-center border-2 border-[#b22123]">
+                    <TouchableOpacity className="bg-[#c72020] w-40 h-40 rounded-full flex-col justify-center items-center border-2 border-[#b22123]" onPress={emergencySms}>
                         <Text className="text-white text-2xl font-bold">SOS</Text>
                         <Text className="text-white">Press for 3 seconds</Text>    
                     </TouchableOpacity>                
