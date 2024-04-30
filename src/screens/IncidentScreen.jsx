@@ -10,11 +10,17 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
+import { RichEditor,RichToolbar } from 'react-native-pell-rich-editor';
+
 
 const IncidentScreen = ({route,navigation}) => {
+  const handleHead = ({tintColor}) => <Text style={{color: tintColor}}>H1</Text>
+
     const {userToken} =   useContext(AuthContext)
     const {incident,address} = route.params
     const user = userToken._id
+
+    const richText = React.useRef();
 
     const isFocused = useIsFocused();
     const WINDOW_HEIGHT = Dimensions.get('window').height;
@@ -332,6 +338,8 @@ const IncidentScreen = ({route,navigation}) => {
         </View>
     </View>
 
+
+
         <TouchableOpacity className="h-9 mt-5 rounded-md bg-[#e43151] justify-center items-center" onPress={()=>SubmitIncident()} disabled={loading ? true:false}>
           {
             loading?
@@ -342,6 +350,7 @@ const IncidentScreen = ({route,navigation}) => {
          </TouchableOpacity>
        </ScrollView>
     </View>
+    
 </>
   )
 }

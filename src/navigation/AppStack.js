@@ -10,6 +10,10 @@ import { Entypo } from '@expo/vector-icons';
 import AddEmergencyContactScreen from '../screens/AddEmergencyContactScreen';
 import ContactBackButton from '../components/ContactBackButton';
 import MapScreen from "../screens/MapScreen"
+import ExploreScreen from '../screens/ExploreScreen';
+import { MaterialIcons } from '@expo/vector-icons';
+import FirstAidScreen from '../screens/FirstAidScreen';
+import FirstAidDetails from '../screens/FirstAidDetails';
 const Tab = createBottomTabNavigator();
 
 export default function AppStack() {
@@ -38,6 +42,14 @@ export default function AppStack() {
     headerShown:false
     }}/>
 
+  <Tab.Screen name="Explore" component={ExploreScreen} options={{
+          tabBarIcon:({focused})=>(<MaterialIcons name="explore" size={24} color={focused?"#C00100":"#cfcfd0"} />),
+          headerShown:false,
+          // tabBarButton: () => null,
+          // tabBarStyle: { display: "none" },
+      }} 
+      />
+
     <Tab.Screen name="Contact" component={ContactScreen} options={{
         tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
         headerShown:false,
@@ -45,6 +57,8 @@ export default function AppStack() {
         // tabBarStyle: { display: "none" },
     }} 
     />
+
+  
 
     <Tab.Screen name="Incident" component={IncidentScreen} options={{
             tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
@@ -71,12 +85,55 @@ export default function AppStack() {
     }} 
     />
 
+<Tab.Screen name="FirstAidDetails" component={FirstAidDetails} options={{
+            tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
+            // headerShown:true,
+            headerStyle:{
+            // backgroundColor:"red",
+            // padding:"10px"
+            },
+            // headerShadowVisible:"500px",
+            tabBarButton: () => '',
+            tabBarStyle: { display: "" },
+            headerTitleStyle:{
+            fontWeight:"bold",
+            fontSize:17,
+            color:'black', 
+            textAlign:"left",
+        },
+        headerShown:false,
+        headerLeft: (navigation) => <BackButton/>,
+        headerTitle:"Report An Incident",
+        headerTitleAlign: 'center',
+            // tabBarButton: () => null,
+            // tabBarStyle: { display: "none" },
+    }} 
+    />
+
     <Tab.Screen name="AddEmergencyContact" component={AddEmergencyContactScreen} options={{
             // tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
             headerShown:true,
             tabBarButton: () => null,
             tabBarStyle: { display: "none" },
             headerTitle:"Add Emergency Contact",
+            headerTitleAlign: 'center',
+            headerTitleStyle:{
+              fontWeight:"bold",
+              fontSize:17,
+              color:'black', 
+              textAlign:"left",
+          },
+          headerLeft: (navigation) => <ContactBackButton/>,
+          
+    }} 
+    />
+
+<Tab.Screen name="FirstAid" component={FirstAidScreen} options={{
+            // tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
+            headerShown:true,
+            tabBarButton: () => null,
+            tabBarStyle: { display: "none" },
+            headerTitle:"First Aid",
             headerTitleAlign: 'center',
             headerTitleStyle:{
               fontWeight:"bold",

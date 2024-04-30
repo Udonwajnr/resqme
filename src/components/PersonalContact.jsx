@@ -26,7 +26,7 @@ const PersonalContact = () => {
         })
         .catch((err)=>{
             setLoading(true)
-            console.loge(err)
+            console.log(err)
             setLoading(false)
         })
     }

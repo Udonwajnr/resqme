@@ -36,7 +36,7 @@ const HomeScreen = ({navigation}) => {
     })
     .catch((err)=>{
         setLoading(true)
-        console.loge(err)
+        console.log(err)
         setLoading(false)
     })
 }
