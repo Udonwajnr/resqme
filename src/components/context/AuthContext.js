@@ -17,7 +17,7 @@ export const AuthProvider =({children})=>{
         await axios.post("https://emergency-backend-api.onrender.com/api/user/login",{email,password})
         .then((data)=>{
             setLoginLoader(true)
-            console.log(data.data.data)
+            // console.log(data.data.data)
             setUserToken(data.data.data);
             AsyncStorage.setItem("userToken", JSON.stringify(data?.data?.data))
             setLoginLoader(false)

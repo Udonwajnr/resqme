@@ -31,7 +31,7 @@ const HomeScreen = ({navigation}) => {
   const contacts =async()=>{
     await axios.get(`https://emergency-backend-api.onrender.com/api/user/${userToken._id}`)
     .then((res)=>{
-        console.log(res.data)   
+        // console.log(res.data)   
         setUsersContact(res.data.contact)
     })
     .catch((err)=>{
@@ -40,8 +40,7 @@ const HomeScreen = ({navigation}) => {
         setLoading(false)
     })
 }
-console.log(usersContacts)
-  
+
   useEffect(()=>{
     (async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
@@ -74,7 +73,6 @@ console.log(usersContacts)
     setHasPermission(status === 'granted');
   };
 
-  
   let text = 'Waiting..';
   if (errorMsg) {
     text = errorMsg;
@@ -93,6 +91,7 @@ console.log(usersContacts)
         console.log("There is no sms on this device")
     }
   }
+  
     return (
     <SafeAreaView className="flex-1 flex-col bg-slate-50 py-3.5">
         <View className="flex-row justify-between px-4">

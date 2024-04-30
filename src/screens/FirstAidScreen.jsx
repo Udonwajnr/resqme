@@ -15,8 +15,6 @@ const FirstAidScreen = ({navigation}) => {
     useEffect(()=>{
         getFirstAidData()
     },[])
-
-    console.log(aidData)
     
     return (
         <SafeAreaView>
