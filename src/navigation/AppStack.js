@@ -14,6 +14,7 @@ import ExploreScreen from '../screens/ExploreScreen';
 import { MaterialIcons } from '@expo/vector-icons';
 import FirstAidScreen from '../screens/FirstAidScreen';
 import FirstAidDetails from '../screens/FirstAidDetails';
+import HealthCenters from '../screens/HealthCenters';
 const Tab = createBottomTabNavigator();
 
 export default function AppStack() {
@@ -79,6 +80,29 @@ export default function AppStack() {
         
         headerLeft: (navigation) => <BackButton/>,
         headerTitle:"Report An Incident",
+        headerTitleAlign: 'center',
+            // tabBarButton: () => null,
+            // tabBarStyle: { display: "none" },
+    }} 
+    />
+
+<Tab.Screen name="HealthCenters" component={HealthCenters} options={{
+            headerShown:false,
+            headerStyle:{
+            // backgroundColor:"red",
+            // padding:"10px"
+            },
+            // headerShadowVisible:"500px",
+            tabBarButton: () => '',
+            tabBarStyle: { display: "" },
+            headerTitleStyle:{
+            fontWeight:"bold",
+            fontSize:17,
+            color:'black', 
+            textAlign:"left",
+        },
+        headerLeft: (navigation) => <BackButton/>,
+        headerTitle:"Health Centers Around Me",
         headerTitleAlign: 'center',
             // tabBarButton: () => null,
             // tabBarStyle: { display: "none" },

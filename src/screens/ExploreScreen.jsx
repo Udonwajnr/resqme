@@ -20,7 +20,7 @@ const ExploreScreen = ({navigation}) => {
                 </TouchableOpacity>
             </View>
 
-            <View className="mt-3">
+            {/* <View className="mt-3">
                 <TouchableOpacity className="flex-row gap-3 items-center border-b border-b-[#e0e2e3] py-2">
                     <Image
                     source={require('../assets/flood.png')}
@@ -28,10 +28,10 @@ const ExploreScreen = ({navigation}) => {
                     />
                     <Text className="text-lg font-">Disaster Preparedness</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
 
             <View className="mt-3">
-                <TouchableOpacity className="flex-row gap-3 items-center border-b border-b-[#e0e2e3] py-2">
+                <TouchableOpacity className="flex-row gap-3 items-center border-b border-b-[#e0e2e3] py-2" onPress={()=>navigation.navigate("HealthCenters")}>
                     <Image
                     source={require('../assets/hospital.png')}
                     className="w-6 h-6 "

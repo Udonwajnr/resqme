@@ -19,7 +19,7 @@ const MapScreen = ({route,navigation}) => {
                 <MapView
                     style={{width:"100%",height:"100%",alignSelf: 'stretch'}}
                     region={mapRegion}>
-                    <Marker coordinate={mapRegion} title='Marker' />
+                    <Marker coordinate={mapRegion} title='Me' />
                 </MapView>
 
             </View>

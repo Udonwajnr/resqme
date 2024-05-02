@@ -24,14 +24,14 @@ const FirstAidDetails = ({navigation,route}) => {
       };
       
     return (
-    <SafeAreaView>
-        <View className="py-2 bg-slate-50 relative">
+    <SafeAreaView className="bg-white">
+        <View className="py-2 bg-white relative">
         <TouchableOpacity onPress={() => navigation.navigate("FirstAid")} className="absolute left-2 top-2 z-20">
             <Entypo name="chevron-left" size={29} color="black" />
          </TouchableOpacity>
           <Text className="text-2xl text-center capitalize">{data.title}</Text>
         </View>
-        <ScrollView className="px-2">
+        <ScrollView className="px-2 bg-white">
            <RenderHtml
             contentWidth={width}
             source={{html:`${data.article}`}}
