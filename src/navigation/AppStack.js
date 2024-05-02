@@ -130,7 +130,7 @@ export default function AppStack() {
 
 <Tab.Screen name="FirstAid" component={FirstAidScreen} options={{
             // tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
-            headerShown:true,
+            headerShown:false,
             tabBarButton: () => null,
             tabBarStyle: { display: "none" },
             headerTitle:"First Aid",
@@ -141,11 +141,8 @@ export default function AppStack() {
               color:'black', 
               textAlign:"left",
           },
-          headerLeft: (navigation) => <ContactBackButton/>,
-          
     }} 
     />
-
 <Tab.Screen name="MapScreen" component={MapScreen} options={{
             // tabBarIcon:({focused})=>(<Feather name="phone-call" size={24} color={focused?"#C00100":"#cfcfd0"} />),
             headerShown:false,
@@ -160,10 +157,8 @@ export default function AppStack() {
               textAlign:"left",
           },
           headerLeft: (navigation) => <ContactBackButton/>,
-          
     }} 
     />
-
     </Tab.Navigator>
   )
 }

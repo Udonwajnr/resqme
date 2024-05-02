@@ -1,7 +1,9 @@
-import { View, Text ,useWindowDimensions,ScrollView} from 'react-native'
+import { View, Text ,useWindowDimensions,ScrollView,TouchableOpacity} from 'react-native'
 import React,{useEffect,useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import RenderHtml from 'react-native-render-html';
+import { Entypo } from '@expo/vector-icons';
+
 const FirstAidDetails = ({navigation,route}) => {
    const [data,setData] = useState({})
    const { width } = useWindowDimensions();
@@ -10,22 +12,24 @@ const FirstAidDetails = ({navigation,route}) => {
       enableExperimentalPercentWidth: true
     }
   };
-  
     useEffect(()=>{
         if(route.params.aid){
             setData(route.params.aid)
         }
-    },[route.params])
+    },[route.params.aid])
     const tagsStyles = {
         ul:{
-            marginTop:-10
+            marginTop:-15
         }
       };
       
     return (
     <SafeAreaView>
-        <View className="py-2 bg-slate-50">
-            <Text className="text-2xl text-center capitalize">{data.title}</Text>
+        <View className="py-2 bg-slate-50 relative">
+        <TouchableOpacity onPress={() => navigation.navigate("FirstAid")} className="absolute left-2 top-2 z-20">
+            <Entypo name="chevron-left" size={29} color="black" />
+         </TouchableOpacity>
+          <Text className="text-2xl text-center capitalize">{data.title}</Text>
         </View>
         <ScrollView className="px-2">
            <RenderHtml

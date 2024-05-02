@@ -56,7 +56,7 @@ const HomeScreen = ({navigation}) => {
                     setAddress(data[0])
                 })
                 .catch((error)=>{
-                    console.log("check your data connection")
+                    console.log(" your data connection")
                 })
                 setLocation(currentLocation);
       })();
