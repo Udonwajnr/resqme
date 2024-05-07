@@ -66,18 +66,18 @@ const SignInScreen = ({navigation}) => {
                 }
               </TouchableOpacity>
     
-              <View className="flex-row items-center mt-10">
+              {/* <View className="flex-row items-center mt-10">
                   <View className="border border-b-0 border-[#ecedf0] flex-1 w-6/12 h-[1px]" ></View>
                   <Text className="px-4 text-[#b9b9bb]">Or</Text>
                   <View className="border border-b-0 border-[#ecedf0] flex-1 w-6/12 h-[1px]"></View>
-              </View>
+              </View> */}
 
-              <View className="mt-10">
+              {/* <View className="mt-10">
                 <TouchableOpacity className="flex-row items-center justify-center border border-[#ecedf0] rounded-md h-9">
                     <Image source={require('../assets/google.png')} className="h-6 w-6 mr-1"/>
                     <Text className="font-semibold ml-1">Continue With Google</Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
 
               <View className="flex-row items-center justify-center mt-20">
                 <Text className="items-center justify-center">Don't have an account ?</Text>
