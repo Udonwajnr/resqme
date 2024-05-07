@@ -13,7 +13,7 @@ import { Camera } from 'expo-camera';
 import axios from 'axios';
 
 const HomeScreen = ({navigation}) => {
-  const {logout,userToken,hasPermission, setHasPermission }=useContext(AuthContext)
+  const {logout,userToken,hasPermission, setHasPermission,userLocation,setUserLocation }=useContext(AuthContext)
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [latitude,setLatitude] = useState(0)
@@ -52,6 +52,7 @@ const HomeScreen = ({navigation}) => {
             // console.log(currentLocation)
             setLatitude(currentLocation.coords.latitude)
             setLongitude(currentLocation.coords.longitude)
+            setUserLocation({latitude:currentLocation.coords.latitude,longitude:currentLocation.coords.longitude})
         const reverseGeoCodeAddress = await Location.reverseGeocodeAsync(currentLocation.coords).then((data)=>{
                     setAddress(data[0])
                 })
@@ -67,7 +68,7 @@ const HomeScreen = ({navigation}) => {
   useEffect(() => {
     onHandlePermission();
   }, []);
-
+  console.log(userLocation)
   const onHandlePermission = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
     setHasPermission(status === 'granted');

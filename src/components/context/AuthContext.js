@@ -11,7 +11,7 @@ export const AuthProvider =({children})=>{
     const [userToken,setUserToken] = useState(null)
     const [userData,setUserData] = useState({})
     const [hasPermission, setHasPermission] = useState(null);
-
+    const [userLocation,setUserLocation] = useState({})
     const login = async(email,password)=>{
         setLoginLoader(true)
         await axios.post("https://emergency-backend-api.onrender.com/api/user/login",{email,password})
@@ -68,7 +68,7 @@ export const AuthProvider =({children})=>{
 
     
     return(
-        <AuthContext.Provider value={{login,logout,isLoading,userToken,setLoginLoader,loginLoader,userData,hasPermission, setHasPermission}}>
+        <AuthContext.Provider value={{login,logout,isLoading,userToken,setLoginLoader,loginLoader,userData,hasPermission, setHasPermission,userLocation,setUserLocation}}>
             {children}
         </AuthContext.Provider>
     )

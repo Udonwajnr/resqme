@@ -3,6 +3,7 @@ import React,{useEffect,useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import RenderHtml from 'react-native-render-html';
 import { Entypo } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
 const FirstAidDetails = ({navigation,route}) => {
    const [data,setData] = useState({})
@@ -19,7 +20,7 @@ const FirstAidDetails = ({navigation,route}) => {
     },[route.params.aid])
     const tagsStyles = {
         ul:{
-            marginTop:-15
+            marginTop:-13
         }
       };
       
