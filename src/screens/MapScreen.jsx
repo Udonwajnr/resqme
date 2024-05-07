@@ -6,11 +6,11 @@ import MapViewDirections from 'react-native-maps-directions';
 import { useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {GOOGLE_MAP_KEY} from "@env"
+
 const MapScreen = ({route,navigation}) => {
   const {latitude,longitude }  = route.params
   const [location,setLocation] = useState({latitude:0,longitude:0}) 
   const [isSelectionModeEnabled, setIsSelectionModeEnabled]=React.useState(false);
-
   const [mapRegion, setmapRegion] = useState({
         latitude: latitude,
         longitude: longitude,
